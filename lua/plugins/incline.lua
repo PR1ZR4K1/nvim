@@ -1,0 +1,107 @@
+return {
+  'b0o/incline.nvim',
+  dependencies = {
+    "nvim-web-devicons",
+    "nvim-lualine/lualine.nvim",
+  },
+  config = function()
+    local helpers = require('incline.helpers')
+    local incline = require('incline')
+    local devicons = require('nvim-web-devicons')
+
+
+    function get_lualine_colors(lualine, props, ft_color)
+      local fg, bg, ifg, ibg
+      local theme_name = lualine.get_config().options.theme
+      local theme = require("lualine.themes." .. theme_name)
+      local m = vim.api.nvim_get_mode().mode
+
+      ifg = helpers.contrast_color(ft_color)
+      ibg = ft_color
+
+      if not props.focused then -- inactive window pane
+        fg = theme.inactive.a.fg
+        bg = theme.inactive.a.bg
+        ifg = theme.inactive.a.fg
+        ibg = theme.inactive.a.bg
+      elseif m:match('n') then
+        fg = theme.normal.a.fg
+        bg = theme.normal.a.bg
+      elseif m:match('i') then
+        fg = theme.insert.a.fg
+        bg = theme.insert.a.bg
+      elseif m:match('R') then
+        fg = theme.replace.a.fg
+        bg = theme.replace.a.bg
+      elseif m:match('v') or m:match('V') or m:match('') then
+        fg = theme.visual.a.fg
+        bg = theme.visual.a.bg
+      else -- unknown mode!
+        fg = '#000000'
+        bg = '#FFFFFF'
+      end
+
+      return {fg = fg, bg = bg, ifg = ifg, ibg = ibg}
+    end
+
+    function get_fallback_colors(props, ft_color)
+      -- set fallback colors here
+      if not props.focused then -- inactive window pane
+        return {fg = '#999999', bg = '#000000', ibg = '#000000', ifg = '#999999'}
+      else -- active window pane
+        local ft_contrast = helpers.contrast_color(ft_color)
+        return {fg = ft_contrast, bg = ft_color, ifg = ft_contrast, ibg = ft_color}
+      end
+    end
+
+    function get_colors(props, ft_color)
+      if not ft_color then -- unknown filetypes have no color
+        ft_color = '#000000'
+      end
+
+      local lualine = require('lualine')
+      local colors
+
+      colors = get_lualine_colors(lualine, props, ft_color)
+
+      return colors or get_fallback_colors(props, ft_color)
+    end
+
+    incline.setup {
+      hide = {
+        only_win = true,
+        cursorline = false,
+        focused_win = false
+      },
+      ignore = {
+        filetypes = { 'neo-tree' }
+      },
+      window = {
+        padding = 0,
+        overlap = { borders = true, tabline = false, winbar = true, statusline = true },
+        margin = { vertical = 0, horizontal = 0 },
+        placement = { vertical = 'top' },
+      },
+      render = function(props)
+        local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ':t')
+        local ft_icon, ft_color = devicons.get_icon_color(filename)
+        local modified = vim.bo[props.buf].modified
+
+        local colors = get_colors(props, ft_color)
+
+        return {
+          { '', guifg = colors.bg, guibg = 'NONE' },        -- left cap (new)
+          ft_icon and { ' ', ft_icon, ' ', guifg = colors.fg } or '',
+          ' ',
+          { filename, gui = modified and 'bold,italic' or 'bold' },
+          ' ',
+          { '', guifg = colors.bg, guibg = 'NONE' },        -- right cap (new)
+          guifg = colors.fg,
+          guibg = colors.bg,
+        }
+      end
+    }
+  end,
+  -- Optional: Lazy load Incline
+  event = 'VeryLazy',
+}
