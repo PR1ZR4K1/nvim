@@ -14,6 +14,8 @@ diagnostic.config({
   update_in_insert = false, -- only update when leaving insert mode
 })
 
+opt.clipboard = "unnamedplus"
+
 -- tabs & indentation
 opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
 opt.shiftwidth = 2 -- 2 spaces for indent width
