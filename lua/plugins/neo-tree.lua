@@ -9,8 +9,12 @@ return {
   config = function()
     require("neo-tree").setup({
       filesystem = {
-        hijack_netrw_behavior = "disabled",
-      }
+        filtered_items = {
+          visible = true,        -- show hidden files (dimmed)
+          hide_dotfiles = false, -- don't hide dotfiles
+          hide_gitignored = false, -- optional: also show gitignored files
+        },
+      },
     })
 
     vim.keymap.set("n", "<C-n>", ':Neotree toggle right<CR>', {desc = 'Vscode???'})

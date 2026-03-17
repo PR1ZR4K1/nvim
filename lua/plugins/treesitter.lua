@@ -11,6 +11,8 @@ return {
 				-- A list of parser names, or "all"
 				ensure_installed = {
 					"vimdoc",
+					"css",
+					"vue",
 					"javascript",
 					"typescript",
 					"c",
