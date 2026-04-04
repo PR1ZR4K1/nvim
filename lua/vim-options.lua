@@ -14,7 +14,11 @@ diagnostic.config({
   update_in_insert = false, -- only update when leaving insert mode
 })
 
-opt.clipboard = "unnamedplus"
+local has_clipboard_provider = vim.fn.executable("pbcopy") == 1
+  or vim.fn.executable("wl-copy") == 1
+  or vim.fn.executable("xclip") == 1
+  or vim.fn.executable("xsel") == 1
+  or vim.fn.executable("clip.exe") == 1
 
 -- tabs & indentation
 opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
@@ -49,3 +53,23 @@ opt.scrolloff = 8
 -- split windows
 opt.splitright = true -- split vertical window to the right
 opt.splitbelow = true -- split horizontal window to the bottom
+
+-- clipboard through ssh when OSC52 is available; otherwise use the default provider
+local has_osc52, osc52 = pcall(require, "vim.ui.clipboard.osc52")
+
+if has_osc52 then
+  opt.clipboard = "unnamedplus"
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = osc52.copy("+"),
+      ["*"] = osc52.copy("*"),
+    },
+    paste = {
+      ["+"] = osc52.paste("+"),
+      ["*"] = osc52.paste("*"),
+    },
+  }
+elseif has_clipboard_provider then
+  opt.clipboard = "unnamedplus"
+end

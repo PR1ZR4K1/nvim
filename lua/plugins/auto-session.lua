@@ -3,9 +3,9 @@ return {
   lazy = false,
   keys = {
     -- Will use Telescope if installed or a vim.ui.select picker otherwise
-    { "<leader>wr", "<cmd>AutoSession search<CR>", desc = "Session search" },
-    { "<leader>ws", "<cmd>AutoSession save<CR>", desc = "Save session" },
-    { "<leader>wa", "<cmd>AutoSession toggle<CR>", desc = "Toggle autosave" },
+    { "<leader>wr", "<cmd>AutoSession search<CR>", desc = "Search Saved Sessions" },
+    { "<leader>ws", "<cmd>AutoSession save<CR>", desc = "Save Current Session" },
+    { "<leader>wa", "<cmd>AutoSession toggle<CR>", desc = "Toggle Session Autosave" },
   },
   dependencies = { "nvim-telescope/telescope.nvim" },
   ---enables autocomplete for opts

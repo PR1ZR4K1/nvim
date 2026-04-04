@@ -6,6 +6,10 @@ return {
 		require("catppuccin").setup({
 			integrations = {
 				cmp = true,
+        telescope = {
+          enabled = true,
+        },
+        which_key = true,
 			},
 		})
 		vim.cmd.colorscheme("catppuccin")

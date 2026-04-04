@@ -17,6 +17,6 @@ return {
       },
     })
 
-    vim.keymap.set("n", "<C-n>", ':Neotree toggle right<CR>', {desc = 'Vscode???'})
+    vim.keymap.set("n", "<C-n>", ':Neotree toggle right<CR>', { desc = "Toggle File Explorer" })
   end
 }

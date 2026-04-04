@@ -1,4 +1,9 @@
 -- Bootstrap lazy.nvim
+if vim.fn.has("nvim-0.9.4") == 0 then
+  vim.api.nvim_err_writeln("This config requires Neovim >= 0.9.4. Please upgrade Neovim on this machine.")
+  return
+end
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -21,5 +26,4 @@ require("vim-options")
 require("nvim-keymaps")
 
 require("lazy").setup("plugins")
-
 
