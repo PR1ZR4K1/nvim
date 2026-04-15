@@ -53,6 +53,7 @@ opt.scrolloff = 8
 -- split windows
 opt.splitright = true -- split vertical window to the right
 opt.splitbelow = true -- split horizontal window to the bottom
+opt.showtabline = 1 -- only show the tabline when there are multiple tabs
 
 -- clipboard through ssh when OSC52 is available; otherwise use the default provider
 local has_osc52, osc52 = pcall(require, "vim.ui.clipboard.osc52")
