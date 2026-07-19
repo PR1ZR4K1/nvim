@@ -68,6 +68,8 @@ keymap.set("n", "<M-Down>",  "<C-w>5-", { desc = "Decrease Split Height" })
 -- move line up/down (normal mode)
 keymap.set("n", "<M-j>", ":m .+1<CR>==", { desc = "Move Line Down" })
 keymap.set("n", "<M-k>", ":m .-2<CR>==", { desc = "Move Line Up" })
+keymap.set("n", "<C-j>", "15j", { desc = "Jump Down 15 Lines" })
+keymap.set("n", "<C-k>", "15k", { desc = "Jump Up 15 Lines" })
 
 -- move selection up/down (visual mode)
 keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv", { desc = "Move Selection Down" })
