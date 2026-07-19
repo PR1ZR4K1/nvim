@@ -1,7 +1,43 @@
 local keymap = vim.keymap -- for conciseness
 vim.g.mapleader = " "
 
+local function current_file_path(modifier)
+  local path = vim.fn.expand("%" .. modifier)
+
+  if path == nil or path == "" then
+    vim.notify("Current buffer is not associated with a file", vim.log.levels.WARN)
+    return nil
+  end
+
+  return path
+end
+
+local function copy_current_file_path(modifier, register, success_message)
+  return function()
+    local path = current_file_path(modifier)
+
+    if not path then
+      return
+    end
+
+    vim.fn.setreg(register, path)
+    vim.notify(success_message .. ": " .. path, vim.log.levels.INFO)
+  end
+end
+
 keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to System Clipboard" })
+keymap.set("n", "<leader>pa", copy_current_file_path(":p", '"', "Copied absolute file path to unnamed register"), {
+  desc = "Copy Absolute File Path to Unnamed Register",
+})
+keymap.set("n", "<leader>pr", copy_current_file_path("", '"', "Copied relative file path to unnamed register"), {
+  desc = "Copy Relative File Path to Unnamed Register",
+})
+keymap.set("n", "<leader>pA", copy_current_file_path(":p", "+", "Copied absolute file path to system clipboard"), {
+  desc = "Copy Absolute File Path to System Clipboard",
+})
+keymap.set("n", "<leader>pR", copy_current_file_path("", "+", "Copied relative file path to system clipboard"), {
+  desc = "Copy Relative File Path to System Clipboard",
+})
 
 keymap.set("i", "jk", "<ESC>", { desc = "Exit Insert Mode" })
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear Search Highlights" })

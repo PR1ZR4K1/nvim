@@ -14,12 +14,6 @@ diagnostic.config({
   update_in_insert = false, -- only update when leaving insert mode
 })
 
-local has_clipboard_provider = vim.fn.executable("pbcopy") == 1
-  or vim.fn.executable("wl-copy") == 1
-  or vim.fn.executable("xclip") == 1
-  or vim.fn.executable("xsel") == 1
-  or vim.fn.executable("clip.exe") == 1
-
 -- tabs & indentation
 opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
 opt.shiftwidth = 2 -- 2 spaces for indent width
@@ -55,11 +49,16 @@ opt.splitright = true -- split vertical window to the right
 opt.splitbelow = true -- split horizontal window to the bottom
 opt.showtabline = 1 -- only show the tabline when there are multiple tabs
 
--- clipboard through ssh when OSC52 is available; otherwise use the default provider
+local has_clipboard_provider = vim.fn.executable("pbcopy") == 1
+  or vim.fn.executable("wl-copy") == 1
+  or vim.fn.executable("xclip") == 1
+  or vim.fn.executable("xsel") == 1
+  or vim.fn.executable("clip.exe") == 1
+
+-- keep Neovim's default registers local unless we need OSC52 as a clipboard fallback
 local has_osc52, osc52 = pcall(require, "vim.ui.clipboard.osc52")
 
-if has_osc52 then
-  opt.clipboard = "unnamedplus"
+if not has_clipboard_provider and has_osc52 then
   vim.g.clipboard = {
     name = "OSC 52",
     copy = {
@@ -71,6 +70,4 @@ if has_osc52 then
       ["*"] = osc52.paste("*"),
     },
   }
-elseif has_clipboard_provider then
-  opt.clipboard = "unnamedplus"
 end

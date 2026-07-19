@@ -79,6 +79,7 @@ return {
     spec = {
       { "<leader>f", group = "Find", icon = { icon = "", color = "cyan" } },
       { "<leader>g", group = "Git", icon = { icon = "", color = "orange" } },
+      { "<leader>p", group = "Path", icon = { icon = "󰉋", color = "green" } },
       { "<leader>w", group = "Session", icon = { icon = "󰆓", color = "blue" } },
       { "<leader>s", group = "Splits", icon = { icon = "", color = "yellow" } },
       { "<leader>x", group = "Diagnostics", icon = { icon = "", color = "orange" } },
@@ -97,6 +98,10 @@ return {
       { "<leader>gg", desc = "Open Git Status" },
       { "<leader>nh", desc = "Clear Search Highlights" },
       { "<leader>o", desc = "Run Command" },
+      { "<leader>pa", desc = "Copy Absolute File Path to Unnamed Register" },
+      { "<leader>pA", desc = "Copy Absolute File Path to System Clipboard" },
+      { "<leader>pr", desc = "Copy Relative File Path to Unnamed Register" },
+      { "<leader>pR", desc = "Copy Relative File Path to System Clipboard" },
       { "<leader>r", desc = "Re-run Last Command" },
       { "<leader>rn", desc = "Rename Symbol" },
       { "<leader>rs", desc = "Restart LSP" },
